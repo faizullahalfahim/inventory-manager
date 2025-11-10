@@ -30,15 +30,27 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-
-
+    
    const db = client.db("inventory-db");
    const modelsCollection = db.collection("model");
-
+      
+    //find method
    app.get( '/models', async(req, res) => {
     const models = await modelsCollection.find().toArray();
     res.send(models)
    });
+
+    //post method
+    app.post('/models' , async (req, res) => {
+      const data = req.body;
+      console.log(data);
+      const result = await modelsCollection.insertOne(req.body);
+      res.send(
+        {
+          success: true,
+        }
+      )
+    })
 
 
     
