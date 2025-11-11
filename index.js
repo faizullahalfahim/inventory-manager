@@ -63,10 +63,10 @@ async function run() {
       console.log(id);
       console.log(data);
       const Id = new ObjectId(id);
-      const filter = { _id: Id}
+      const filter = { _id: Id };
       const update = {
-        $set: data
-      }
+        $set: data,
+      };
       const result = await modelsCollection.updateOne(filter, update);
 
       res.send({
@@ -75,7 +75,26 @@ async function run() {
       });
     });
     // Delete Method
-    
+
+    app.delete("/models/:id", async (req, res) => {
+      const { id } = req.params;
+      // const Id = new ObjectId (id)
+      // const filter =  {_id: Id}
+      const result = await modelsCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
+
+      res.send({
+        success: true,
+        result,
+      });
+    });
+
+    //latest data get method
+    app.get("/latest-models", async (req, res) => {
+      const result = await modelsCollection.find().sort({ createdAt: "asc" }).limit(6).toArray()
+      res.send(result)
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
