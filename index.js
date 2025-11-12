@@ -1,5 +1,6 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+require("dotenv").config()
 const cors = require("cors");
 const app = express();
 const port = 3000;
@@ -11,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 const uri =
-  "mongodb+srv://inventory-maneger:0YANjgYKVR8u7rKn@datafast.dq4p809.mongodb.net/?appName=datafast";
+  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@datafast.dq4p809.mongodb.net/?appName=datafast`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
